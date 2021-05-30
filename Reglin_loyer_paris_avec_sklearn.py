@@ -1,8 +1,9 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 plt.style.use('seaborn-whitegrid')
-
+sns.set_theme()
 
 # On charge le dataset
 house_data = pd.read_csv("house_data.csv")
@@ -13,6 +14,8 @@ print(house_data.describe())
 print (house_data.info())
 house_data = house_data.dropna()
 house_data = house_data.astype(int)
+# Ici on enleve les outliers
+house_data = house_data[house_data['price']<8000]
 print (house_data.info())
 
 X = house_data[house_data.columns[1:]]
@@ -44,3 +47,9 @@ rmse = (np.sqrt(mean_squared_error(y_train, y_train_predict)))
 r2 = r2_score(y_train, y_train_predict)
 print ('Le score r² est :',r2,'\nLe score RMSE est : ',rmse)
 
+
+g = sns.lmplot(
+    data=house_data,
+    x="surface", y="price", hue="arrondissement",col="arrondissement",
+    height=5)
+plt.show()
